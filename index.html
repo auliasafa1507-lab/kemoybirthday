@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For Kemoy 💖</title>
+
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI';
+  background:#ffc0cb;
+  text-align:center;
+  overflow:hidden;
+}
+
+.screen {
+  position:absolute;
+  width:100%;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  transition:1s;
+}
+
+.active { opacity:1; z-index:1; }
+
+/* LOADING */
+#bar {
+  width:200px;
+  height:10px;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+}
+#progress {
+  width:0%;
+  height:100%;
+  background:#ff69b4;
+}
+
+/* PIN */
+.pin-box {
+  display:grid;
+  grid-template-columns:repeat(3,70px);
+  gap:10px;
+}
+.pin-btn {
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  font-size:20px;
+}
+#pinDisplay {
+  letter-spacing:10px;
+  font-size:24px;
+  margin-bottom:15px;
+}
+
+/* LETTER */
+.letter {
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  max-width:80%;
+  text-align:left;
+  min-height:200px;
+}
+
+/* FOTO */
+.slide {
+  position:absolute;
+  width:150px;
+  border-radius:15px;
+  opacity:0;
+  transition:1s;
+}
+
+/* HEART */
+.heart {
+  position:fixed;
+  top:-10px;
+  animation:fall linear infinite;
+}
+@keyframes fall {
+  to { transform:translateY(100vh); }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" loop>
+<source src="Nadhif Basalamah - penjaga hati (Lirik).mp3">
+</audio>
+
+<!-- LOADING -->
+<div class="screen active" id="loading">
+  <h2>Loading for someone special 🤍</h2>
+  <div id="bar"><div id="progress"></div></div>
+</div>
+
+<!-- PIN -->
+<div class="screen" id="pin">
+  <h2>Enter PIN 🤍</h2>
+  <div id="pinDisplay">____</div>
+
+  <div class="pin-box">
+    <button class="pin-btn" onclick="press(1)">1</button>
+    <button class="pin-btn" onclick="press(2)">2</button>
+    <button class="pin-btn" onclick="press(3)">3</button>
+    <button class="pin-btn" onclick="press(4)">4</button>
+    <button class="pin-btn" onclick="press(5)">5</button>
+    <button class="pin-btn" onclick="press(6)">6</button>
+    <button class="pin-btn" onclick="press(7)">7</button>
+    <button class="pin-btn" onclick="press(8)">8</button>
+    <button class="pin-btn" onclick="press(9)">9</button>
+    <button class="pin-btn" onclick="clearPin()">⌫</button>
+    <button class="pin-btn" onclick="press(0)">0</button>
+    <button class="pin-btn" onclick="checkPin()">✔</button>
+  </div>
+</div>
+
+<!-- LETTER -->
+<div class="screen" id="letter">
+  <div class="letter" id="typedText"></div>
+  <br>
+  <button onclick="show('gallery')">Next</button>
+</div>
+
+<!-- FOTO -->
+<div class="screen" id="gallery">
+  <h2>Your Childhood 🤍</h2>
+
+  <img class="slide" src="Screenshot_20260419-223241_Instagram.jpg">
+  <img class="slide" src="Screenshot_20260419-223259_Instagram.jpg">
+  <img class="slide" src="Screenshot_20260419-223255_Instagram.jpg">
+  <img class="slide" src="Screenshot_20260419-223250_Instagram.jpg">
+
+  <br><br>
+  <button onclick="show('music')">Next 🎶</button>
+</div>
+
+<!-- MUSIC -->
+<div class="screen" id="music">
+  <h2>Special song for you 💌</h2>
+
+  <iframe src="https://open.spotify.com/embed/track/5y2ijHECwFYWqcAHKTZgzD" width="300" height="80"></iframe>
+  <br>
+  <iframe src="https://open.spotify.com/embed/track/273QnyCvJB65rScHJ1nPZb" width="300" height="80"></iframe>
+</div>
+
+<script>
+
+// PLAY MUSIC
+document.body.onclick=()=>bgm.play();
+
+// LOADING BAR
+let p=0;
+let load=setInterval(()=>{
+  p++;
+  progress.style.width=p+"%";
+  if(p>=100){
+    clearInterval(load);
+    show("pin");
+  }
+},30);
+
+// PIN
+let pin="";
+function press(n){
+  if(pin.length<6){
+    pin+=n;
+    pinDisplay.innerText="•".repeat(pin.length);
+  }
+}
+function clearPin(){
+  pin=pin.slice(0,-1);
+  pinDisplay.innerText="•".repeat(pin.length);
+}
+function checkPin(){
+  if(pin=="200408"){
+    show("letter");
+    startTyping();
+  } else alert("Wrong PIN 😢");
+}
+
+// SCREEN
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// TYPING
+let text=`Happy Birthday, Kemoyy 🤍
+
+(isi love letter kamu di sini)`;
+let i=0;
+
+function startTyping(){
+  let speed=40;
+  function type(){
+    if(i<text.length){
+      typedText.innerHTML+=text.charAt(i);
+      i++;
+      setTimeout(type,speed);
+    }
+  }
+  type();
+}
+
+// SLIDESHOW
+let slides=document.querySelectorAll(".slide");
+let s=0;
+setInterval(()=>{
+  slides.forEach(e=>e.style.opacity=0);
+  slides[s].style.opacity=1;
+  s=(s+1)%slides.length;
+},2000);
+
+// HEART
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="🤍";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(Math.random()*2+3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},300);
+
+</script>
+
+</body>
+</html>
