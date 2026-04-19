@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For Kemoy 💖</title>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  text-align:center;
+  background: linear-gradient(to bottom, #ffc0cb, #ffffff);
+}
+
+.screen { display:none; padding:30px; }
+.active { display:block; }
+
+button {
+  padding:12px 20px;
+  border:none;
+  border-radius:20px;
+  background:pink;
+  color:white;
+}
+
+.letter {
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  max-width:600px;
+  margin:auto;
+  text-align:left;
+  white-space: pre-line;
+}
+
+#slideshow {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin: auto;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  border-radius: 20px;
+  opacity: 0;
+  transition: 1s;
+}
+
+.heart {
+  position: fixed;
+  top:-10px;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  to { transform: translateY(100vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKSOUND -->
+<audio id="bgm" loop>
+  <source src="Nadhif Basalamah - penjaga hati (Lirik).mp3" type="audio/mpeg">
+</audio>
+
+<!-- LOADING -->
+<div class="screen active" id="loading">
+  <h2>Prepare something special for you 🤍</h2>
+</div>
+
+<!-- PIN -->
+<div class="screen" id="pin">
+  <h2>Masukkan PIN 🤍</h2>
+  <input type="password" id="pinInput">
+  <br><br>
+  <button onclick="checkPin()">Masuk</button>
+</div>
+
+<!-- TAP -->
+<div class="screen" id="tap">
+  <h2>Tap 🤍 5 kali</h2>
+  <h1 onclick="tapLove()">🤍</h1>
+  <p id="count"></p>
+</div>
+
+<!-- LETTER -->
+<div class="screen" id="letter">
+  <div class="letter">
+Happy Birthday, Kemoyy 🤍
+
+Yeyy akhirnya hari ini datang juga, hari spesialnya kemoyy. Aku seneng bangettt, karna tahun ini aku bisa ada di samping kamu, jadi bagian dari hari bahagia kamu. Rasanya bahagia banget bisa ngerayain ulang tahun kamu, orang yang sekarang punya tempat penting di hidup aku sekarang🥺
+
+Kemoy… di umur kamu yang udah 18 tahun ini, aku berharap kamu bisa terus tumbuh jadi pribadi yang lebih dewasa, lebih tenang dalam menghadapi apapun, lebih kuat, dan lebih baik dari pribadi kamu kemarin. Semoga semua hal baik selalu datang ke kamu, satu per satu, dan semua yang kamu impikan bisa pelan pelan jadi kenyataan. Kamu pantas dapetin itu semua dan aku mau nemenin sampe kamu bisa raih itu semua💖
+
+Aku juga mau minta maaf… karna aku sadar aku masih banyak kurangnya. Kadang aku belum bisa jadi yang terbaik buat kamu, kadang aku masih salah, masih kurang ngerti kamu. Tapi aku janji, aku bakal terus belajar, terus usaha, dan berusaha lebih dari yang aku bisa supaya kamu selalu ngerasa bahagia, ngerasa dihargai, dan ngerasa dicintai.
+
+Thank you for being in my life, for staying, for choosing me. Kamu itu berarti banget buat aku.
+
+Aku sayang banget sama kamu, Kemoy 🤍  
+I love you to the moon and back 🤍🥺
+  </div>
+
+  <br>
+  <button onclick="showGallery()">Next 📸</button>
+</div>
+
+<!-- GALERI -->
+<div class="screen" id="gallery">
+  <h2>Your Childhood 🤍</h2>
+
+  <div id="slideshow">
+    <img class="slide" src="Screenshot_20260419-223241_Instagram.jpg">
+    <img class="slide" src="Screenshot_20260419-223259_Instagram.jpg">
+    <img class="slide" src="Screenshot_20260419-223255_Instagram.jpg">
+    <img class="slide" src="Screenshot_20260419-223250_Instagram.jpg">
+  </div>
+
+  <br><br>
+
+  <h2>Special song for you 💌</h2>
+
+  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5y2ijHECwFYWqcAHKTZgzD" width="300" height="80"></iframe>
+  <br>
+  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/273QnyCvJB65rScHJ1nPZb" width="300" height="80"></iframe>
+
+</div>
+
+<script>
+
+// AUTOPLAY MUSIK PAS KLIK
+document.body.addEventListener("click", function() {
+  document.getElementById("bgm").play();
+}, { once: true });
+
+// PIN PAGE
+setTimeout(()=>show("pin"),2500);
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(e=>e.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// PIN CHECK
+function checkPin(){
+  if(document.getElementById("pinInput").value=="200408"){
+    show("tap");
+  } else {
+    alert("PIN salah 😢");
+  }
+}
+
+// TAP LOVE
+let tap=0;
+function tapLove(){
+  tap++;
+  document.getElementById("count").innerText=tap+"/5";
+  if(tap>=5){ show("letter"); }
+}
+
+// NEXT PAGE
+function showGallery(){ show("gallery"); }
+
+// SLIDESHOW
+let slides=document.querySelectorAll(".slide");
+let i=0;
+function slideShow(){
+  slides.forEach(s=>s.style.opacity="0");
+  slides[i].style.opacity="1";
+  i=(i+1)%slides.length;
+}
+setInterval(slideShow,2000);
+slideShow();
+
+// HEART EFFECT
+function heart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="🤍";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(Math.random()*2+3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+}
+setInterval(heart,300);
+
+</script>
+
+</body>
+  </html>
